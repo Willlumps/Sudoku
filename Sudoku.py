@@ -1,14 +1,7 @@
 import numpy as np
+import Scraper
 
-grid = [[6, 1, 0, 0, 0, 0, 0, 0, 9],
-        [0, 0, 0, 0, 0, 6, 0, 4, 0],
-        [2, 0, 0, 0, 1, 7, 0, 0, 0],
-        [0, 3, 0, 0, 0, 0, 0, 7, 6],
-        [4, 0, 9, 0, 0, 0, 2, 0, 1],
-        [5, 2, 0, 0, 0, 0, 0, 3, 0],
-        [0, 0, 0, 4, 7, 0, 0, 0, 5],
-        [0, 8, 0, 3, 0, 0, 0, 0, 0],
-        [7, 0, 0, 0, 0, 0, 0, 1, 3]]
+grid = Scraper.getBoard()
 
 def possiblePlay(row, col, num):
     for i in range(9):
@@ -34,6 +27,7 @@ def solve():
                         solve()
                         grid[row][col] = 0
                 return
+    print("---------------------------------------------")
     print(np.matrix(grid))
 
 solve()

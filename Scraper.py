@@ -1,19 +1,31 @@
-from urllib.request import urlopen
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
 
-url = 'https://www.websudoku.com/'
+url = 'https://nine.websudoku.com/?level=4&set_id=8362066110'
 page = requests.get(url)
 
 
 soup = BeautifulSoup(page.content, 'html.parser')
 
-results = soup.find(id="puzzle_container", style="position:relative;")
+def getBoard():
+    
+    grid = []
 
-print(results)
+    results = soup.find("table", id="puzzle_grid")
 
+    for table in results.findAll("tr"):
+        
+        row = []
+        for test in table.findAll("input"):
 
+            if (test.get("maxlength") == "1"):
+                row.append(None)
+            else:
+                row.append(int(test.get("value")))
+        grid.append(row)
 
-
-
-
+    print(np.matrix(grid))
+    return grid
+          
+# getBoard()
