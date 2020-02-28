@@ -20,7 +20,7 @@ def getBoard():
         for test in table.findAll("input"):
 
             if (test.get("maxlength") == "1"):
-                row.append(None)
+                row.append(0)
             else:
                 row.append(int(test.get("value")))
         grid.append(row)
