@@ -15,14 +15,15 @@ class Board():
         return self.board
 
 class GUI(Frame):
-   
+    buttons = [[[] for i in range(9)] for j in range(9)]
+
     def __init__(self, parent, game):
         self.game = game
         Frame.__init__(self, parent)
         self.parent = parent
         self.__initGUI()
         
-
+        
 
     def __initGUI(self):
         self.parent.title("Sudoku")
@@ -32,29 +33,37 @@ class GUI(Frame):
         # self.__dcanvas()
         self.__dboard()
 
+    
+    
 
     def __dboard(self):
         self.pixel = tkinter.PhotoImage(width=1, height=1)
+        count=0
         for i in range(9):
             for j in range(9):
                 btnText = self.game.puzzle()[j][i] if self.game.puzzle()[j][i] != 0 else " "
-                btn = Button(self.parent, image=self.pixel, text=btnText, width=50, height=50, compound="left")
+                if btnText == " ":
+                    btn = Button(self.parent, image=self.pixel, text=btnText, width=50, height=50, compound="left", command=lambda row=j, col=i: self.action(col, row))
+                else:
+                    btn = Button(self.parent, image=self.pixel, text=btnText, font=("bold"), disabledforeground="#CC6666", width=50, height=50, 
+                                 compound="left", state=DISABLED, command=lambda row=j, col=i: self.action(col, row))
+                self.buttons[j][i] = btn
                 if j == 2 or j == 5:
                     btn.grid(column=i, row=j, pady=(0, 2))
                 if i == 2 or i == 5:
                     btn.grid(column=i, row=j, padx=(0, 2))
                 else:
                     btn.grid(column=i, row=j)
-                # cell = self.game.puzzle()[j][i]
-                # if cell != 0:
-                #     row = (i * 50) + 25
-                #     col = (j * 50) + 25
-                #     self.canvas.create_text(row, col, text=cell, tags="numbers")
+                count += 1
+
         
+        #print(np.matrix(self.buttons))
 
-    # def __btnTest(self):
+    def action(self, row, col):
+        #button = buttons[btn]
+        #print(self.buttons)
+        self.buttons[col][row].config(text="dicks")
 
-   
     def possiblePlay(self, row, col, num):
         for i in range(9):
             if (self.grid[row][i] == num):
