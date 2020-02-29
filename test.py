@@ -10,14 +10,86 @@ class Board():
 
     def __init__(self, board):
         self.board = board
+        self.resetBoard = board
 
     def puzzle(self):
         return self.board
+
+    def possiblePlay(self, row, col, num):
+        for i in range(9):
+            if (self.board[row][i] == num):
+                return False
+        for i in range(9):
+            if (self.board[i][col] == num):
+                return False
+
+        for i in range(3):
+            for j in range(3):
+                if (self.board[((row//3) * 3) + i][((col//3) * 3) + j] == num):
+                    return False
+        return True
+
+    def solve(self):
+        for row in range(9):
+            for col in range(9):
+                if (self.board[row][col] == 0):
+                    for num in range(1, 10):
+                        if (self.possiblePlay(row, col, num)):
+                            self.board[row][col] = num
+                            self.solve()
+                            self.board[row][col] = 0
+                    return
+        print("---------------------------------------------")
+        print(np.matrix(self.board))
+
+    def checkRows(self):
+        count = 0
+        for i in range(9):
+            if len(self.board[i]) != len(set(self.board[i])):
+                return False
+            if not 0 in self.board[i]:
+                count += 1
+        if count == 9:
+            return True
+
+    def checkCols(self):
+        count = 0
+        for i in range(9):
+            columns = []
+            for j in range(9):
+                columns.append(self.board[j][i])
+            if len(columns) != len(set(columns)):
+                return False
+            if not 0 in columns:
+                count += 1
+        if count == 9:
+            return True
+    
+    def checkSquares(self):
+        count = 0
+
+        squares = []
+        for i in range(3):
+            for j in range(3):
+                squares.append(self.board[i][j])
+        if len(squares) != len(set(squares)):
+            return False
+        if not 0 in squares:
+            count += 1
+        if count == 1:
+            return True
+                
+            
+            
+               
+        
 
 class GUI(Frame):
     buttons = [[[] for i in range(9)] for j in range(9)]
     currentButton = buttons[0][0]
     buttonText = ""
+    ro = 0
+    co = 0
 
     def __init__(self, parent, game):
         self.game = game
@@ -43,14 +115,13 @@ class GUI(Frame):
         self.selectedButton = StringVar()
         self.test = StringVar()
         count=0
-        print (self.game.puzzle()[1][2])
         for i in range(9):
             for j in range(9):
                 btnText = self.game.puzzle()[i][j] if self.game.puzzle()[i][j] != 0 else " "
                 if btnText == " ":
                     # btn = Button(self.parent, image=self.pixel, text=btnText, width=50, height=50, compound="left", 
                     #              command=lambda row=j, col=i: self.action(col, row))
-                    btn = Radiobutton(self.parent, image=self.pixel, text=btnText, value=count, variable=self.selectedButton, width=50, height=50, 
+                    btn = Radiobutton(self.parent, image=self.pixel, text=btnText, font=("bold"), value=count, variable=self.selectedButton, width=50, height=50, 
                                       compound="left", indicatoron=False, command=lambda row=i, col=j: self.getRowCol(col, row))
                 else:
                     # btn = Button(self.parent, image=self.pixel, text=btnText, font=("bold"), disabledforeground="#CC6666", width=50, 
@@ -90,40 +161,21 @@ class GUI(Frame):
 
     def getRowCol(self, row, col):
         self.currentButton = self.buttons[col][row]
+        self.ro = row
+        self.co = col
         print(self.selectedButton.get())
     def placeShit(self, tex):
-        # self.selectedButton
         self.currentButton.config(text=tex)
+        self.game.puzzle()[self.co][self.ro] = int(tex)
+        # print (np.matrix(self.game.puzzle()))
+        # self.game.solve()
+        if self.game.checkSquares() == True:
+            print ("WINNNNNNNNNNNNER")
     
 
 
 
-    def possiblePlay(self, row, col, num):
-        for i in range(9):
-            if (self.grid[row][i] == num):
-                return False
-        for i in range(9):
-            if (self.grid[i][col] == num):
-                return False
-
-        for i in range(3):
-            for j in range(3):
-                if (self.grid[((row//3) * 3) + i][((col//3) * 3) + j] == num):
-                    return False
-        return True
-
-    def solve(self):
-        for row in range(9):
-            for col in range(9):
-                if (self.grid[row][col] == 0):
-                    for num in range(1, 10):
-                        if (self.possiblePlay(row, col, num)):
-                            self.grid[row][col] = num
-                            self.solve()
-                            self.grid[row][col] = 0
-                    return
-        print("---------------------------------------------")
-        # print(np.matrix(self.grid))
+    
 
 
 if __name__ == '__main__':
