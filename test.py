@@ -32,55 +32,25 @@ class GUI(Frame):
         # self.__dcanvas()
         self.__dboard()
 
-    def __dcanvas(self):
-        spacing = 50
-        for i in range(9):
-            lineColor = "grey" if i % 3 == 0 else "blue"
-            lineThickness = 2 if i % 3 == 0 else 1
-
-            # Vertical board lines
-            x1 = i * spacing
-            y1 = 0
-            x2 = i * spacing
-            y2 = 500
-            self.canvas.create_line(x1, y1, x2, y2, fill=lineColor, width=lineThickness)
-
-            # Horizontal board lines
-            x1 = 0
-            y1 = i * spacing
-            x2 = 500
-            y2 = i * spacing
-            self.canvas.create_line(x1, y1, x2, y2, fill=lineColor, width=lineThickness)
 
     def __dboard(self):
         self.pixel = tkinter.PhotoImage(width=1, height=1)
-        rowInc = 0
-        colInc = 0
-        for h in range(10):
-            for i in range(3):
-                for j in range(3):
-                    
-                    btn = Button(self.parent, image=self.pixel, text=str(h), width=50, height=50, compound="left")
-                    if j == 2 and h < 6:
-                        btn.grid(column=i + colInc, row=j + rowInc, pady=(0, 2))
-                    if i == 2 and h % 3 != 0:
-                        btn.grid(column=i + colInc, row=j + rowInc, padx=(0, 2))
-                    else:
-                        btn.grid(column=i + colInc, row=j + rowInc)
-            
-            if h == 3 or h == 6:
-                rowInc += 3
-            if h % 3 == 0:
-                colInc = 0
-            else:
-                colInc += 3
-
+        for i in range(9):
+            for j in range(9):
+                btnText = self.game.puzzle()[j][i] if self.game.puzzle()[j][i] != 0 else " "
+                btn = Button(self.parent, image=self.pixel, text=btnText, width=50, height=50, compound="left")
+                if j == 2 or j == 5:
+                    btn.grid(column=i, row=j, pady=(0, 2))
+                if i == 2 or i == 5:
+                    btn.grid(column=i, row=j, padx=(0, 2))
+                else:
+                    btn.grid(column=i, row=j)
                 # cell = self.game.puzzle()[j][i]
                 # if cell != 0:
                 #     row = (i * 50) + 25
                 #     col = (j * 50) + 25
                 #     self.canvas.create_text(row, col, text=cell, tags="numbers")
-            
+        
 
     # def __btnTest(self):
 
