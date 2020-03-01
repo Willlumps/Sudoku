@@ -2,6 +2,7 @@ import numpy as np
 from Scraper import getBoard
 import tkinter
 from tkinter import *
+from tkinter import messagebox
 
 
 class Board():
@@ -37,11 +38,21 @@ class Board():
                             self.solve()
                             self.board[row][col] = 0
                     return
-        print(np.matrix(self.board))
+        #print(np.matrix(self.board))
+        answer = ""
+        for i in range(9):
+            for j in range(9):
+                answer += str(self.board[i][j]) + " "
+            answer += " \n"
+        #print(answer)
+        messagebox.showinfo("dicks", answer)
+       
+    
 
     def checkWin(self):
         if self.__checkRows() and self.__checkCols() and self.__checkSquares():
             return True
+        return False
 
     def __checkRows(self):
         count = 0
@@ -107,9 +118,7 @@ class GUI(Frame):
         Frame.__init__(self, parent)
         self.parent = parent
         self.__initGUI()
-        
-        
-
+  
     def __initGUI(self):
         self.parent.title("Sudoku")
         self.__dboard()
@@ -126,12 +135,12 @@ class GUI(Frame):
                     # btn = Button(self.parent, image=self.pixel, text=btnText, width=50, height=50, compound="left", 
                     #              command=lambda row=j, col=i: self.action(col, row))
                     btn = Radiobutton(self.parent, image=self.pixel, text=btnText, font=("bold"), value=count, variable=self.selectedButton, width=50, height=50, 
-                                      compound="left", indicatoron=False, command=lambda row=i, col=j: self.getRowCol(col, row))
+                                      compound="left", indicatoron=False, bg="#D0D8E3", command=lambda row=i, col=j: self.getRowCol(col, row))
                 else:
                     # btn = Button(self.parent, image=self.pixel, text=btnText, font=("bold"), disabledforeground="#CC6666", width=50, 
                     #               height=50, compound="left", state=DISABLED, command=lambda row=j, col=i: self.action(col, row))
                     btn = Radiobutton(self.parent, image=self.pixel, text=btnText, font=("bold"), value=count, variable=self.selectedButton, 
-                                      state=DISABLED, disabledforeground="#CC6666", width=50, height=50, compound="left", indicatoron=False)
+                                      state=DISABLED, disabledforeground="#CC6666", width=50, height=50, compound="left", indicatoron=False, bg="#D0D8E3")
                 self.buttons[i][j] = btn
                 if i == 2 or i == 5:
                     btn.grid(column=j, row=i, pady=(0, 2))
@@ -140,28 +149,30 @@ class GUI(Frame):
                 else:
                     btn.grid(column=j, row=i)
                 count += 1
+        
+        one = Button(self.parent, image=self.pixel, text="1", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('1'))
+        two = Button(self.parent, image=self.pixel, text="2", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('2'))
+        three = Button(self.parent, image=self.pixel, text="3", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('3'))
+        four = Button(self.parent, image=self.pixel, text="4", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('4'))
+        five = Button(self.parent, image=self.pixel, text="5", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('5'))
+        six = Button(self.parent, image=self.pixel, text="6", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('6'))
+        seven = Button(self.parent, image=self.pixel, text="7", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('7'))
+        eight = Button(self.parent, image=self.pixel, text="8", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('8'))
+        nine = Button(self.parent, image=self.pixel, text="9", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('9'))
+        solve = Button(self.parent, image=self.pixel, text="Solve", font=("bold"), width=52, height=50, bg="#A1B2C7", compound="left", command=self.solve)
 
-        one = Button(self.parent, image=self.pixel, text="1", width=50, height=50, compound="left", command=lambda : self.placeShit('1'))
-        two = Button(self.parent, image=self.pixel, text="2", width=50, height=50, compound="left", command=lambda : self.placeShit('2'))
-        three = Button(self.parent, image=self.pixel, text="3", width=50, height=50, compound="left", command=lambda : self.placeShit('3'))
-        four = Button(self.parent, image=self.pixel, text="4", width=50, height=50, compound="left", command=lambda : self.placeShit('4'))
-        five = Button(self.parent, image=self.pixel, text="5", width=50, height=50, compound="left", command=lambda : self.placeShit('5'))
-        six = Button(self.parent, image=self.pixel, text="6", width=50, height=50, compound="left", command=lambda : self.placeShit('6'))
-        seven = Button(self.parent, image=self.pixel, text="7", width=50, height=50, compound="left", command=lambda : self.placeShit('7'))
-        eight = Button(self.parent, image=self.pixel, text="8", width=50, height=50, compound="left", command=lambda : self.placeShit('8'))
-        nine = Button(self.parent, image=self.pixel, text="9", width=50, height=50, compound="left", command=lambda : self.placeShit('9'))
-
-        one.grid(column=0, row=9, pady=(20, 0))
-        two.grid(column=1, row=9, pady=(20, 0))
-        one.grid(column=0, row=9, pady=(20, 0))
-        two.grid(column=1, row=9, pady=(20, 0))
-        three.grid(column=2, row=9, pady=(20, 0))
-        four.grid(column=3, row=9, pady=(20, 0))
-        five.grid(column=4, row=9, pady=(20, 0))
-        six.grid(column=5, row=9, pady=(20, 0))
-        seven.grid(column=6, row=9, pady=(20, 0))
-        eight.grid(column=7, row=9, pady=(20, 0))
-        nine.grid(column=8, row=9, pady=(20, 0))
+        one.grid(column=0, row=10, pady=(3, 0)) 
+        two.grid(column=1, row=10, pady=(3, 0))
+        one.grid(column=0, row=10, pady=(3, 0))
+        two.grid(column=1, row=10, pady=(3, 0))
+        three.grid(column=2, row=10, pady=(3, 0))
+        four.grid(column=3, row=10, pady=(3, 0))
+        five.grid(column=4, row=10, pady=(3, 0))
+        six.grid(column=5, row=10, pady=(3, 0))
+        seven.grid(column=6, row=10, pady=(3, 0))
+        eight.grid(column=7, row=10, pady=(3, 0))
+        nine.grid(column=8, row=10, pady=(3, 0))
+        solve.grid(column=0, row=11)
 
     def getRowCol(self, row, col):
         self.currentButton = self.buttons[col][row]
@@ -170,9 +181,13 @@ class GUI(Frame):
     def placeShit(self, tex):
         self.currentButton.config(text=tex)
         self.game.puzzle()[self.co][self.ro] = int(tex)
-        # self.game.solve()
         if self.game.checkWin() == True:
-            print ("WINNNNNNNNNNNNER")
+            print ("You won or something, I guess")
+        #print(np.matrix(self.game.puzzle()))
+    def solve(self):
+        
+        self.game.solve()
+        
     
 if __name__ == '__main__':
 
