@@ -1,14 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
-import numpy as np
-
-url = 'https://nine.websudoku.com/?level=4&set_id=8362066110'
-page = requests.get(url)
-
-
-soup = BeautifulSoup(page.content, 'html.parser')
 
 def getBoard():
+    url = 'https://nine.websudoku.com/?level=4&set_id=8362066110'
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
     
     grid = []
 
@@ -25,7 +21,6 @@ def getBoard():
                 row.append(int(test.get("value")))
         grid.append(row)
 
-    print(np.matrix(grid))
+    
     return grid
           
-# getBoard()
