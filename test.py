@@ -2,8 +2,6 @@ import numpy as np
 from Scraper import getBoard
 import tkinter
 from tkinter import *
-import requests
-from bs4 import BeautifulSoup
 
 
 class Board():
@@ -39,10 +37,13 @@ class Board():
                             self.solve()
                             self.board[row][col] = 0
                     return
-        print("---------------------------------------------")
         print(np.matrix(self.board))
 
-    def checkRows(self):
+    def checkWin(self):
+        if self.__checkRows() and self.__checkCols() and self.__checkSquares():
+            return True
+
+    def __checkRows(self):
         count = 0
         for i in range(9):
             if len(self.board[i]) != len(set(self.board[i])):
@@ -52,7 +53,7 @@ class Board():
         if count == 9:
             return True
 
-    def checkCols(self):
+    def __checkCols(self):
         count = 0
         for i in range(9):
             columns = []
@@ -65,24 +66,34 @@ class Board():
         if count == 9:
             return True
     
-    def checkSquares(self):
+    def __checkSquares(self):
+        count = 0
+        for i in range(0, 7, 3):
+            for j in range(0, 7, 3):
+                if self.__singleSquare(i, j) == False:
+                    return False
+                else:
+                    count += 1
+        if count == 9:
+            return True
+
+
+    def __singleSquare(self, row, col):
         count = 0
 
         squares = []
         for i in range(3):
             for j in range(3):
-                squares.append(self.board[i][j])
+                squares.append(self.board[i+row][j+col])
         if len(squares) != len(set(squares)):
             return False
         if not 0 in squares:
             count += 1
         if count == 1:
             return True
-                
-            
-            
-               
-        
+        else:
+            return False
+   
 
 class GUI(Frame):
     buttons = [[[] for i in range(9)] for j in range(9)]
@@ -101,14 +112,7 @@ class GUI(Frame):
 
     def __initGUI(self):
         self.parent.title("Sudoku")
-        #self.pack(fill=BOTH)
-        #self.canvas = Canvas(self, highlightthickness=2, highlightbackground="grey", width=450, height=450)
-        #self.canvas.pack(fill=BOTH, side=TOP)
-        # self.__dcanvas()
         self.__dboard()
-
-    
-    
 
     def __dboard(self):
         self.pixel = tkinter.PhotoImage(width=1, height=1)
@@ -163,21 +167,13 @@ class GUI(Frame):
         self.currentButton = self.buttons[col][row]
         self.ro = row
         self.co = col
-        print(self.selectedButton.get())
     def placeShit(self, tex):
         self.currentButton.config(text=tex)
         self.game.puzzle()[self.co][self.ro] = int(tex)
-        # print (np.matrix(self.game.puzzle()))
         # self.game.solve()
-        if self.game.checkSquares() == True:
+        if self.game.checkWin() == True:
             print ("WINNNNNNNNNNNNER")
     
-
-
-
-    
-
-
 if __name__ == '__main__':
 
     game = Board(getBoard())
@@ -186,3 +182,5 @@ if __name__ == '__main__':
     gui = GUI(root, game)
     
     root.mainloop()
+
+#TODO CLEAR BOARD BUTTON, NEW GAME OPTION, SOLVE OPTION, POP-UP ON WIN - QUIT OR NEW GAME
