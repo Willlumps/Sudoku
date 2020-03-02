@@ -3,14 +3,16 @@ from Scraper import getBoard
 import tkinter
 from tkinter import *
 from tkinter import messagebox
+import copy
 
 
 class Board():
 
-    def __init__(self, board):
+    def __init__(self, board, gui):
         self.board = board
         self.resetBoard = board
-
+        self.solvedBoard = None
+        self.gui = gui
     def puzzle(self):
         return self.board
 
@@ -38,16 +40,21 @@ class Board():
                             self.solve()
                             self.board[row][col] = 0
                     return
-        #print(np.matrix(self.board))
-        answer = ""
-        for i in range(9):
-            for j in range(9):
-                answer += str(self.board[i][j]) + " "
-            answer += " \n"
-        #print(answer)
-        messagebox.showinfo("dicks", answer)
+        print('Solve1')
+        print(np.matrix(self.board))
+        print('done solving')
+        self.gui.game.solvedBoard = self.board
+        return 
+        # answer = ""
+        # for i in range(9):
+        #     for j in range(9):
+        #         answer += str(self.board[i][j]) + " "
+        #     answer += " \n"
+        # #print(answer)
+        # messagebox.showinfo("jhg", answer)
        
-    
+    def getBoard202(self):
+        return self.board
 
     def checkWin(self):
         if self.__checkRows() and self.__checkCols() and self.__checkSquares():
@@ -113,8 +120,8 @@ class GUI(Frame):
     ro = 0
     co = 0
 
-    def __init__(self, parent, game):
-        self.game = game
+    def __init__(self, parent):
+        self.game = Board(getBoard(), self)
         Frame.__init__(self, parent)
         self.parent = parent
         self.__initGUI()
@@ -159,7 +166,7 @@ class GUI(Frame):
         seven = Button(self.parent, image=self.pixel, text="7", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('7'))
         eight = Button(self.parent, image=self.pixel, text="8", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('8'))
         nine = Button(self.parent, image=self.pixel, text="9", font=("bold"), width=52, height=50, compound="left", bg="#A1B2C7", command=lambda : self.placeShit('9'))
-        solve = Button(self.parent, image=self.pixel, text="Solve", font=("bold"), width=52, height=50, bg="#A1B2C7", compound="left", command=self.solve)
+        solve = Button(self.parent, image=self.pixel, text="Solve", font=("bold"), width=52, height=50, bg="#A1B2C7", compound="left", command=self.SolveBoard)
 
         one.grid(column=0, row=10, pady=(3, 0)) 
         two.grid(column=1, row=10, pady=(3, 0))
@@ -181,21 +188,33 @@ class GUI(Frame):
     def placeShit(self, tex):
         self.currentButton.config(text=tex)
         self.game.puzzle()[self.co][self.ro] = int(tex)
-        if self.game.checkWin() == True:
+        if self.game.checkWin():
             print ("You won or something, I guess")
-        #print(np.matrix(self.game.puzzle()))
-    def solve(self):
+        #print(np.matrix(self.game.getBoard()))
+    def SolveBoard(self):
         
+        # otherThing = copy.deepcopy(self.game)
+        print("solving...")
         self.game.solve()
+
+        
+        print('solved:')
+        print(np.matrix(self.game.solvedBoard))
+        
+
+        # thing = self.game.solve()
+        # print(thing)
         
     
 if __name__ == '__main__':
 
-    game = Board(getBoard())
+    #game = Board(getBoard())
     root = Tk()
     root.config(background="black")
-    gui = GUI(root, game)
-    
+    #gui = GUI(root, game)
+    gui = GUI(root)
+
     root.mainloop()
 
 #TODO CLEAR BOARD BUTTON, NEW GAME OPTION, SOLVE OPTION, POP-UP ON WIN - QUIT OR NEW GAME
+#deepcopy 201 46
