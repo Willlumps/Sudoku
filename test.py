@@ -10,7 +10,7 @@ class Board():
 
     def __init__(self, board):
         self.board = board
-        self.resetBoard = board
+        self.resetBoard = copy.deepcopy(board)
         self.solvedBoard = None
 
     def possiblePlay(self, board, row, col, num):
@@ -218,8 +218,10 @@ class GUI(Frame):
                        bg="#A1B2C7", command=lambda: self.placeShit('8'))
         nine = Button(self.parent, image=self.pixel, text="9", font=("bold"), width=52, height=50, compound="left",
                       bg="#A1B2C7", command=lambda: self.placeShit('9'))
-        solve = Button(self.parent, image=self.pixel, text="Solve", font=("bold"), width=52, height=50, bg="#A1B2C7",
-                       compound="left", command=self.paintSolve())
+        solve = Button(self.parent, image=self.pixel, text="Solve", font=("bold"), width=110, height=50, bg="#A1B2C7",
+                       compound="left", command=lambda: self.paintSolve())
+        reset = Button(self.parent, image=self.pixel, text="Reset", font=("bold"), width=115, height=50, bg="#A1B2C7",
+                       compound="left", command=lambda: self.reset())
 
         one.grid(column=0, row=10, pady=(3, 0))
         two.grid(column=1, row=10, pady=(3, 0))
@@ -232,7 +234,8 @@ class GUI(Frame):
         seven.grid(column=6, row=10, pady=(3, 0))
         eight.grid(column=7, row=10, pady=(3, 0))
         nine.grid(column=8, row=10, pady=(3, 0))
-        solve.grid(column=0, row=11)
+        solve.grid(column=0, row=11, columnspan=2)
+        reset.grid(column=2,row=11, columnspan=2)
 
     def getRowCol(self, row, col):
         self.currentButton = self.buttons[col][row]
@@ -249,11 +252,32 @@ class GUI(Frame):
     def paintSolve(self):
 
         # ill leave this portion for you to write
+        for i in range(9):
+            for j in range(9):
+                self.game.board[i][j] = self.game.resetBoard[i][j]
+
         print("solving...")
         self.game.solve()
         print('solved:')
         print(np.matrix(self.game.solvedBoard))
+        for i in range(9):
+            for j in range(9):
+                self.buttons[i][j].deselect()
+                self.buttons[i][j].config(text=self.game.solvedBoard[i][j], state=DISABLED)
 
+    def reset(self):
+        for i in range(9):
+            for j in range(9):
+                self.buttons[i][j].deselect()
+                self.buttons[i][j].config(text=self.game.resetBoard[i][j] if self.game.resetBoard[i][j] != 0 else " ", 
+                                          state=NORMAL if self.buttons[i][j].cget("disabledforeground") != "#CC6666" else DISABLED)
+
+    
+    
+
+        
+                
+                
 
 if __name__ == '__main__':
     # game = Board(getBoard())
