@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def getSudokuBoard():
-    url = 'https://nine.websudoku.com/?level=4&set_id=8362066110'
+    url = 'https://nine.websudoku.com/?level=4'
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     
