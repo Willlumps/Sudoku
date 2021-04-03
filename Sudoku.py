@@ -1,11 +1,10 @@
 import numpy as np
 from Scraper import getSudokuBoard
 import copy
-import pygame
 import sys
 
 
-class Board():   
+class Board():
     # Stores the current state of the Sudoku board and handles all logic
     # used in the game itself
 
@@ -40,7 +39,7 @@ class Board():
     def solve(self):
         """ Solves the current game board"""
         # If the board hasn't been solved yet, creates a copy of the board
-        # and solves it, returning the solved board for future use. 
+        # and solves it, returning the solved board for future use.
         if self.solvedBoard is None:
             the_board = copy.deepcopy(self.board)
             self.solveSolution(the_board)
@@ -169,37 +168,3 @@ class Board():
             return True
         else:
             return False
-
-
-#class GUI(Frame):
-#
-#    def __init__(self, parent):
-#
-#    def __initGUI(self):
-#
-#    def __dboard(self):
-#
-#    def getRowCol(self, row, col):
-#
-#    def placeCell(self, tex):
-#
-#    def paintSolve(self):
-#
-#    def reset(self):
-#
-#    def newBoard(self, parent):
-#
-#    def onWin(self):
-        
-
-if __name__ == '__main__':
-  pygame.init()
-  pygame.display.set_caption("dicks")
-
-  screen = pygame.display.set_mode((240, 180))
-
-  running = True
-  while running:
-    for event in pygame.event.get():
-      if event.type == pygame.QUIT:
-        running = False
