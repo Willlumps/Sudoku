@@ -102,3 +102,4 @@ venv.bak/
 *.dSYM/
 Sudoku
 board
+.ccls
