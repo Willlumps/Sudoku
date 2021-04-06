@@ -20,7 +20,9 @@ def getSudokuBoard():
             else:
                 row.append(int(test.get("value")))
         grid.append(row)
-
-    
+    f = open("board", 'w')
+    f.write(str(grid))
     return grid
           
+
+getSudokuBoard()
