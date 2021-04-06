@@ -18,10 +18,10 @@ def getSudokuBoard():
 
             if (test.get("maxlength") == "1"):
                 #row.append(0)
-                board += "0 "
+                board += "0"
             else:
                 #row.append(int(test.get("value")))
-                board += test.get("value") + " "
+                board += test.get("value")
         #grid.append(row)
     f = open("board", 'w')
     f.write(board)
