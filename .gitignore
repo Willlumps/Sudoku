@@ -103,3 +103,6 @@ venv.bak/
 Sudoku
 board
 .ccls
+CmakeCache.txt
+CmakeFiles/
+cmake_install.cmake
