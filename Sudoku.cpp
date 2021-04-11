@@ -3,14 +3,18 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 class Sudoku {
   // TODO Make this dynamic so it's easier to throw around?
-  int board[9][9];
+  //int board[9][9];
+  std::vector<std::vector<int>> board = std::vector<std::vector<int>>(9, std::vector<int>(9));
+
   public:
     Sudoku();
     ~Sudoku();
-    int* getBoard();
+    std::vector<std::vector<int>>* getBoard();
+    void solve();
 
   private:
     char* readFile(const char* source);
@@ -49,17 +53,18 @@ void Sudoku::initializeBoard() {
   //  std::cout << std::endl;
   //}
 }
-
-int* Sudoku::getBoard() {
-  return &this->board[9][9];
+std::vector<std::vector<int>>* Sudoku::getBoard() {
+  return &this->board;
 }
 
 int main(int argc, char *argv[]) {
+  /*
   Py_Initialize();
   FILE *fp;
   fp = fopen("Scraper.py", "r");
   PyRun_SimpleFile(fp, "Scraper.py");
   Py_Finalize();
+  */
 
   Sudoku *game = new Sudoku();
   return 0;
