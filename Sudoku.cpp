@@ -57,15 +57,15 @@ std::vector<std::vector<int>>* Sudoku::getBoard() {
   return &this->board;
 }
 
-int main(int argc, char *argv[]) {
-  /*
-  Py_Initialize();
-  FILE *fp;
-  fp = fopen("Scraper.py", "r");
-  PyRun_SimpleFile(fp, "Scraper.py");
-  Py_Finalize();
-  */
-
-  Sudoku *game = new Sudoku();
-  return 0;
-}
+//int main(int argc, char *argv[]) {
+//  /*
+//  Py_Initialize();
+//  FILE *fp;
+//  fp = fopen("Scraper.py", "r");
+//  PyRun_SimpleFile(fp, "Scraper.py");
+//  Py_Finalize();
+//  */
+//
+//  Sudoku *game = new Sudoku();
+//  return 0;
+//}
