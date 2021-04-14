@@ -1,16 +1,28 @@
 #include <QApplication>
 #include <QWidget>
+#include <QPushButton>
 #include <iostream>
 
-int main(int argc, char *argv[]) {
+class MyButton : public QWidget {
+  public:
+    MyButton(QWidget *parent = nullptr);
+};
 
+MyButton::MyButton(QWidget *parent) : QWidget(parent) {
+  auto *quitBtn = new QPushButton("Quit", this);
+  quitBtn->setGeometry(50, 40, 75, 30);
+  connect(quitBtn, &QPushButton::clicked, qApp, &QApplication::quit);
+}
+
+
+int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
-  QWidget window;
-
-  window.resize(250, 250);
-  window.setWindowTitle("Simple example");
+  MyButton window;
+  window.resize(350, 250);
+  window.setWindowTitle("Sudoku");
   window.show();
 
   return app.exec();
+  
 }

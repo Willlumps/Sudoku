@@ -810,10 +810,8 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-main.o: main.cpp /usr/local/Cellar/qt@5/5.15.2/lib/QtWidgets.framework/Headers/QApplication \
-		/usr/local/Cellar/qt@5/5.15.2/lib/QtWidgets.framework/Headers/qapplication.h \
-		/usr/local/Cellar/qt@5/5.15.2/lib/QtWidgets.framework/Headers/QWidget \
-		/usr/local/Cellar/qt@5/5.15.2/lib/QtWidgets.framework/Headers/qwidget.h
+main.o: main.cpp /usr/local/Cellar/qt@5/5.15.2/lib/QtCore.framework/Headers/QTextStream \
+		/usr/local/Cellar/qt@5/5.15.2/lib/QtCore.framework/Headers/qtextstream.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 Sudoku.o: Sudoku.cpp /usr/local/Cellar/python@3.9/3.9.2_4/Frameworks/Python.framework/Versions/3.9/Headers/Python.h \
